@@ -23,11 +23,16 @@ def main():
 
     # Check for CUDA support in your build of OpenCV
     use_gpu = cv2.cuda.getCudaEnabledDeviceCount() > 0
+    canny_gpu = None
     if use_gpu:
-        print("GPU acceleration is available. Using CUDA for Canny edge detection.")
-        # Create a CUDA Canny Edge Detector
-        # Note: You might need a custom build of OpenCV with CUDA support for this to work.
-        canny_gpu = cv2.cuda.createCannyEdgeDetector(100, 200)
+        try:
+            canny_gpu = cv2.cuda.createCannyEdgeDetector(100, 200)
+            print("GPU acceleration is available. Using CUDA.")
+        except cv2.error as e:
+            print("CUDA not properly supported in this build:", e)
+            use_gpu = False
+    else:
+        print("GPU acceleration is not available. Using CPU instead.")
     
     print("Press 'q' to quit.")
     
@@ -51,13 +56,9 @@ def main():
         # edges = cv2.Canny(blurred, 100, 200)
 
         if use_gpu:
-            # GPU-based processing using CUDA:
-            # Upload image to GPU memory
-            gpu_frame = cv2.cuda_GpuMat()
-            gpu_frame.upload(blurred)
-            # Detect edges using the CUDA canny detector
-            gpu_edges = canny_gpu.detect(gpu_frame)
-            # Download the resulting image back to CPU memory
+            gpu_mat = cv2.cuda_GpuMat()
+            gpu_mat.upload(blurred)
+            gpu_edges = canny_gpu.detect(gpu_mat)
             edges = gpu_edges.download()
         else:
             edges = cv2.Canny(blurred, 100, 200)
