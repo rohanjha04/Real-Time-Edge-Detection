@@ -2,7 +2,7 @@ import cv2
 
 def main():
     # Open the default camera (0 usually corresponds to the default webcam)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("/Users/rohanjha/Downloads/VID20220807105126.mp4")
     
     if not cap.isOpened():
         print("Cannot open camera")
