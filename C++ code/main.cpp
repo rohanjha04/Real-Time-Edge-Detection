@@ -16,10 +16,16 @@ int main(int argc, char** argv) {
     cv::namedWindow("Original and Edge Detection", cv::WINDOW_NORMAL);
     EdgeDetector detector;
 
+    double fps = cap.get(cv::CAP_PROP_FPS);
+    int delay = static_cast<int>(1000.0 / fps);
+    if (fps <= 0.0 || fps > 120.0) delay = 30;  // Fallback
+
     while (true) {
         cv::Mat frame;
         cap >> frame;
         if (frame.empty()) break;
+
+        // cv::resize(frame, frame, cv::Size(), 0.5, 0.5);
 
         Image input = Image::fromMat(frame);
         Image edges = detector.process(input);
@@ -35,7 +41,7 @@ int main(int argc, char** argv) {
 
         cv::imshow("Original and Edge Detection", combined);
 
-        if (cv::waitKey(1) == 'q') break;
+        if (cv::waitKey(delay) == 'q') break;
     }
 
     cap.release();
