@@ -8,6 +8,6 @@ set(CMAKE_BUILD_TYPE Release)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(edge_detection main.cpp EdgeDetector.cpp)
-# add_executable(edge_detection flicker_motion.cpp)
+# add_executable(edge_detection main.cpp EdgeDetector.cpp)
+add_executable(edge_detection test.cpp)
 target_link_libraries(edge_detection ${OpenCV_LIBS})
