@@ -13,4 +13,4 @@ cmake ..
 # -DOpenCV_DIR="C:/OpenCV_cpp/opencv/build"
 
 # 3. Build
-cmake --build .
+cmake --build . --config Release

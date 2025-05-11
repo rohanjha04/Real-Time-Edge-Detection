@@ -3,7 +3,7 @@
 
 int main() {
     // Open the default camera
-    cv::VideoCapture cap(0);
+    cv::VideoCapture cap("/Users/rohanjha/Desktop/AI-ML/Drishti/Tech/Videos/self_defense.mp4");
     if (!cap.isOpened()) {
         std::cerr << "Cannot open webcam!" << std::endl;
         return -1;
