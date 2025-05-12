@@ -104,6 +104,7 @@ Run the edge detection executable with the following options:
 | *(no args)*      | Returns `-1` and prints usage instructions.                                                      |
 
 *sigma* refers to the Auto-Canny sigma value configured in source (default `0.33`).
+If you wish to store the results of the edges detected on BSDS500 dataset, create a empty folder `C++\ code/output` and the results will be stored automatically.
 
 ---
 

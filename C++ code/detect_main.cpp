@@ -181,6 +181,13 @@ int runEvaluation(const std::string& split) {
         auto t0 = std::chrono::high_resolution_clock::now();
         cv::Mat det = detectEdges(blurred);
         auto t1 = std::chrono::high_resolution_clock::now();
+        //Save the original image and the detected edges
+        cv::Mat colorE, out;
+        //cv::cvtColor(det, colorE, cv::COLOR_GRAY2BGR);
+        cv::hconcat(img, det, out);
+        // cv::imshow("Original | AutoEdges", out);
+        cv::imwrite("output/" + name + "_det.jpg", out);
+        cv::waitKey(1);
 
         double P,R,F1;
         computePRF_dt(det, gtSkel, P,R,F1);
