@@ -201,14 +201,27 @@ int main(int argc, char** argv) {
         return runEvaluation("train");
 
     // video mode
-    if (argc == 3 && std::string(argv[1]) == "--eval") {
-        const std::string videoPath = argv[2];
-        cv::VideoCapture cap(videoPath);
-        printf("Opening video file: %s\n", videoPath.c_str());
-        // cv::VideoCapture cap(videoFileName);
-        if (!cap.isOpened()) {
-            std::cerr<<"Cannot open video\n"; return -1;
+    if (argc >= 2 && std::string(argv[1]) == "--eval") {
+        cv::VideoCapture cap;
+        if(argc < 3) {
+            //Open camera 
+            cap.open(0);
+            if (!cap.isOpened()) {
+                std::cerr << "Cannot open webcam!" << std::endl;
+                return -1;
+            }
         }
+        else {
+            const std::string videoPath = argv[2];
+
+            cap.open(videoPath);
+            printf("Opening video file: %s\n", videoPath.c_str());
+            // cv::VideoCapture cap(videoFileName);
+            if (!cap.isOpened()) {
+                std::cerr<<"Cannot open video\n"; return -1;
+            }
+        }
+        // Set video properties
         cap.set(cv::CAP_PROP_FRAME_WIDTH,  640);
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
 
@@ -230,5 +243,9 @@ int main(int argc, char** argv) {
         }
         return 0;
     }
+    //Print usage message
+    std::cerr << "Usage: " << argv[0] << " --train | --eval <video_file>\n";
+    std::cerr << "       --train: Run evaluation on training set\n";
+    std::cerr << "       --eval <video_file>: Run edge detection on the specified video file\n";
     return -1;
 }
